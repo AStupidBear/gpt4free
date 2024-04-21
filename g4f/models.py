@@ -101,7 +101,9 @@ gpt_4 = Model(
 gpt_4_turbo = Model(
     name          = 'gpt-4-turbo',
     base_provider = 'openai',
-    best_provider = Bing
+    best_provider = RetryProvider([
+        OpenaiChat, Bing, Liaobots, 
+    ])
 )
 
 gigachat = Model(
