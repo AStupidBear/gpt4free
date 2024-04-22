@@ -66,44 +66,26 @@ default = Model(
 gpt_35_long = Model(
     name          = 'gpt-3.5-turbo',
     base_provider = 'openai',
-    best_provider = RetryProvider([
-        OpenaiChat,
-        FreeGpt,
-        You,
-        ChatgptNext,
-    ])
+    best_provider = OpenaiChat
 )
 
 # GPT-3.5 / GPT-4
 gpt_35_turbo = Model(
     name          = 'gpt-3.5-turbo',
     base_provider = 'openai',
-    best_provider = RetryProvider([
-        OpenaiChat,
-        FreeGpt,
-        You,
-        ChatgptNext,
-        Koala,
-        Aichatos,
-        Cnote,
-        Feedough,
-    ])
+    best_provider = OpenaiChat
 )
 
 gpt_4 = Model(
     name          = 'gpt-4',
     base_provider = 'openai',
-    best_provider = RetryProvider([
-        OpenaiChat, Bing, Liaobots, 
-    ])
+    best_provider = OpenaiChat
 )
 
 gpt_4_turbo = Model(
     name          = 'gpt-4-turbo',
     base_provider = 'openai',
-    best_provider = RetryProvider([
-        OpenaiChat, Bing, Liaobots, 
-    ])
+    best_provider = OpenaiChat
 )
 
 gigachat = Model(
