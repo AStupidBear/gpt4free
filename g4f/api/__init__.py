@@ -135,19 +135,15 @@ class Api:
         @app.post("/v1/embeddings")
         async def embeddings(request: Request = None):
             import requests
-            req_data = await request.json()
-            logging.debug("request: " + str(req_data))
-            req_data = {"model": req_data["model"], "prompt": req_data["input"], "encoding_format": req_data["encoding_format"]}
-            if req_data["encoding_format"] == "base64":
+            reqjson = await request.json()
+            logging.debug("request: " + str(reqjson))
+            rspjson = requests.post("http://localhost:8080/v1/embeddings", json=reqjson, headers=request.headers).json()
+            logging.debug("response: " + str(rspjson))
+            if reqjson["encoding_format"] == "base64":
                 import base64
-                rsp_data["embedding"] = base64.b64encode(json.dumps(rsp_data["embedding"]).encode()).decode()
-            rsp_data = requests.post("http://localhost:11434/api/embeddings", json=req_data).json()
-            logging.debug("response: " + str(rsp_data))
-            if req_data["encoding_format"] == "base64":
-                import base64
-                rsp_data["embedding"] = base64.b64encode(json.dumps(rsp_data["embedding"]).encode()).decode()
-            logging.debug("response: " + str(rsp_data))
-            return Response(content=json.dumps(rsp_data), media_type="application/json")
+                for d in rspjson["data"]:
+                    d["embedding"] = base64.b64encode(json.dumps(d["embedding"]).encode()).decode()
+            return Response(content=json.dumps(rspjson), media_type="application/json")
 
 api = Api()
 api.register_routes()
