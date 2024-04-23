@@ -132,6 +132,16 @@ class Api:
         async def completions():
             return Response(content=json.dumps({'info': 'Not working yet.'}, indent=4), media_type="application/json")
 
+        @app.post("/v1/embeddings")
+        async def embeddings(request: Request = None):
+            import requests
+            data = await request.json()
+            logging.debug(data)
+            # data = {"model": data["model"], "prompt": data["input"]}
+            data = {"model": "llama3", "prompt": data["input"]}
+            response = requests.post("http://localhost:11434/api/embeddings", json=data)
+            return Response(content=response.content, media_type="application/json")
+
 api = Api()
 api.register_routes()
 api.register_validation_exception_handler()
