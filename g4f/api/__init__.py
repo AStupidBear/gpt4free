@@ -1,5 +1,6 @@
 import logging
 import json
+import os
 import uvicorn
 
 from fastapi import FastAPI, Response, Request
@@ -16,6 +17,7 @@ from g4f.client import AsyncClient
 from g4f.typing import Messages
 
 app = FastAPI()
+logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO").upper())
 
 class ChatCompletionsConfig(BaseModel):
     messages: Messages
@@ -93,6 +95,7 @@ class Api:
 
         @app.post("/v1/chat/completions")
         async def chat_completions(config: ChatCompletionsConfig, request: Request = None, provider: str = None):
+            logging.debug((await request.body()).decode())
             try:
                 config.provider = provider if config.provider is None else config.provider
                 if config.api_key is None and request is not None:
